@@ -4,13 +4,13 @@ import '../../../routes/app_pages.dart';
 
 class NavbarController extends GetxController {
   // Track the selected index for the BottomNavigationBar
-  var selectedIndex = 0.obs;
+  var selectedIndex = 2.obs;
 
   // List of available routes based on the index
   final List<String> routes = [
-    Routes.HOME,     // 0
+    Routes.BOOKMARK, // 0
     Routes.LOCATION, // 1
-    Routes.BOOKMARK, // 2
+    Routes.HOME,     // 2
     Routes.CHAT,     // 3
     Routes.PROFILE,  // 4
   ];

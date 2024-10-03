@@ -1,4 +1,4 @@
-package com.example.tugas_1
+package com.mascotas.app
 
 import io.flutter.embedding.android.FlutterActivity
 

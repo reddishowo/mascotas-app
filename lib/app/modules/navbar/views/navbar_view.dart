@@ -7,20 +7,37 @@ class CustomBottomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final NavbarController controller = Get.find();
+    final NavbarController controller = Get.find(); // Assumes NavbarController is defined
 
     return Obx(() => BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-            BottomNavigationBarItem(icon: Icon(Icons.location_on), label: 'Location'),
-            BottomNavigationBarItem(icon: Icon(Icons.bookmark), label: 'Bookmark'),
-            BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chat'),
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-          ],
-          currentIndex: controller.selectedIndex.value, // Observe the selected index
-          selectedItemColor: Colors.teal,
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: Colors.teal,  // Changed to teal as selected color
           unselectedItemColor: Colors.grey,
-          onTap: (index) => controller.onItemTapped(index), // Handle tap
+          currentIndex: controller.selectedIndex.value, // Observe the selected index
+          onTap: (index) => controller.onItemTapped(index), // Handle tab changes
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.add_circle_outline),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_cart_outlined),
+              label: '',
+            ),
+            BottomNavigationBarItem( // Center tab for Home
+              icon: Icon(Icons.home_outlined),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.pets),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_outline),
+              label: '',
+            ),
+          ],
         ));
   }
 }
+
