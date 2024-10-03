@@ -1,4 +1,4 @@
-# petcare-app
+# mascotas-app
 
 A new Flutter project.
 
