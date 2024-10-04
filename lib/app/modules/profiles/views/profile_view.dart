@@ -25,7 +25,7 @@ class ProfileView extends GetView<ProfileController> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [Colors.blue, Colors.pink, Colors.orange],
+          colors: [Colors.blue, Colors.purple, Colors.orange],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -51,7 +51,7 @@ class ProfileView extends GetView<ProfileController> {
             CircleAvatar(
               radius: 50,
               backgroundColor: Colors.white,
-              child: Icon(Icons.person, size: 60, color: Colors.grey),
+              backgroundImage: AssetImage('assets/default_avatar.png'),
             ),
             SizedBox(height: 10),
             Obx(() => Text(
@@ -76,7 +76,7 @@ class ProfileView extends GetView<ProfileController> {
   }
 
   Widget _buildStats() {
-    return Padding(
+    return Container(
       padding: const EdgeInsets.symmetric(vertical: 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -89,51 +89,83 @@ class ProfileView extends GetView<ProfileController> {
   }
 
   Widget _buildStatItem(String label, RxInt count) {
-    return Column(
-      children: [
-        Obx(() => Text(
-          count.toString(),
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
+    return Container(
+      width: 100,
+      padding: EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 3,
+            offset: Offset(0, 1),
           ),
-        )),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.grey,
+        ],
+      ),
+      child: Column(
+        children: [
+          Obx(() => Text(
+            count.toString(),
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          )),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.grey,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   Widget _buildMenuItems() {
     return Expanded(
       child: ListView(
+        padding: EdgeInsets.symmetric(horizontal: 16),
         children: [
-          _buildMenuItem('Your Profile', Icons.person),
-          _buildMenuItem('Manage Address', Icons.location_on),
-          _buildMenuItem('My Schedule', Icons.calendar_today),
-          _buildMenuItem('My Wallet', Icons.account_balance_wallet),
-          _buildMenuItem('History Payment', Icons.history),
-          _buildMenuItem('Help Center', Icons.help),
-          _buildMenuItem('Privacy Policy', Icons.privacy_tip),
-          _buildMenuItem('Sign Out', Icons.door_back_door),          
+          _buildMenuItem('Your Profile',icon: Icons.person,),
+          _buildMenuItem('Manage Address', icon: Icons.location_on,),
+          _buildMenuItem('My Schedule', icon: Icons.calendar_today),
+          _buildMenuItem('My Wallet', icon: Icons.account_balance_wallet_outlined),
+          _buildMenuItem('History Payment', icon: Icons.history),
+          _buildMenuItem('Help Center', icon: Icons.help_outline),
+          _buildMenuItem('Privacy Policy', icon: Icons.lock_outline),
+          _buildMenuItem('Sign Out', icon: Icons.door_back_door), 
         ],
       ),
     );
   }
 
-  Widget _buildMenuItem(String title, IconData icon) {
-    return ListTile(
-      leading: Icon(icon),
-      title: Text(title),
-      trailing: Icon(Icons.chevron_right),
-      onTap: () {
-        // Handle menu item tap
-      },
+  Widget _buildMenuItem(String title, {IconData? icon}) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 3,
+            offset: Offset(0, 1),
+          ),
+        ],
+      ),
+      child: ListTile(
+        leading: icon != null ? Icon(icon, color: Colors.grey) : null,
+        title: Text(title),
+        trailing: Icon(Icons.chevron_right, color: Colors.grey),
+        onTap: () {
+          // Handle menu item tap
+        },
+      ),
     );
   }
 }
