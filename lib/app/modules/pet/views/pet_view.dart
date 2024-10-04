@@ -1,38 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io'; // For handling files (images)
-import 'package:mobile_app_backup/app/modules/pet/controllers/pet_controller.dart';
+import 'dart:io';
+import '../controllers/pet_controller.dart';
+import '../../../data/models/pet_model.dart';
 import '../../navbar/views/navbar_view.dart';
 
-// Pet model class
-class Pet {
-  String name;
-  String type;
-  String breed;
-  int age;
-  String imageUrl;
-
-  Pet({
-    required this.name,
-    required this.type,
-    required this.breed,
-    required this.age,
-    required this.imageUrl,
-  });
-}
-
-// PetView with GetView<PetController>
 class PetView extends GetView<PetController> {
-  const PetView({super.key});
+  const PetView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return PetListPage(); // Reference to the PetListPage UI
+    return PetListPage();
   }
 }
 
-/// Custom Pet Card Widget
 class PetCard extends StatelessWidget {
   final Pet pet;
   final VoidCallback onEdit;
@@ -48,56 +30,49 @@ class PetCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 8, // Increased elevation for a more pronounced shadow
+      elevation: 8,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
       ),
-      margin: EdgeInsets.symmetric(
-          vertical: 10, horizontal: 16), // Adjusted margins
+      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
       child: Column(
         children: [
-          // Displaying larger image
           ClipRRect(
-            borderRadius: BorderRadius.vertical(
-                top: Radius.circular(15)), // Rounded top corners
-            child: Container(
-              height: 200, // Increased height for the pet image
-              width: double.infinity, // Full width
+            borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+            child: Obx(() => Container(
+              height: 200,
+              width: double.infinity,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: pet.imageUrl.isNotEmpty
-                      ? FileImage(File(pet.imageUrl))
-                      : AssetImage(
-                          'assets/images/default_pet_image.png'), // Placeholder image
-                  fit: BoxFit.cover, // Cover the entire container
+                  image: pet.imageUrl.value.isNotEmpty
+                      ? FileImage(File(pet.imageUrl.value))
+                      : AssetImage('assets/images/default_pet_image.png') as ImageProvider,
+                  fit: BoxFit.cover,
                 ),
               ),
-            ),
+            )),
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Pet name
-                Text(
-                  pet.name,
+                Obx(() => Text(
+                  pet.name.value,
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
-                ),
-                // Pet type, breed, and age
+                )),
                 SizedBox(height: 4),
-                Text(
-                  '${pet.type} - ${pet.breed} - Age: ${pet.age}',
+                Obx(() => Text(
+                  '${pet.type.value} - ${pet.breed.value} - Age: ${pet.age.value}',
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.grey[700],
                   ),
-                ),
+                )),
                 SizedBox(height: 16),
-                // Edit and Delete buttons
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -120,146 +95,87 @@ class PetCard extends StatelessWidget {
   }
 }
 
-// PetListPage State Management
-class PetListPage extends StatefulWidget {
-  @override
-  _PetListPageState createState() => _PetListPageState();
-}
+class PetListPage extends GetView<PetController> {
+  PetListPage({Key? key}) : super(key: key);
 
-class _PetListPageState extends State<PetListPage> {
-  List<Pet> pets = [];
   final ImagePicker _picker = ImagePicker();
-  File? _imageFile; // To store the picked image
 
-  void addPet(Pet pet) {
-    setState(() {
-      pets.add(pet);
-    });
-  }
+  Future<void> _showPetForm(BuildContext context, {Pet? pet}) async {
+    final isUpdating = pet != null;
+    final formPet = pet ?? Pet(name: '', type: '', breed: '', age: 0, imageUrl: '');
 
-  void updatePet(int index, Pet updatedPet) {
-    setState(() {
-      pets[index] = updatedPet;
-    });
-  }
+    String? imageFilePath;
 
-  void deletePet(int index) {
-    setState(() {
-      pets.removeAt(index);
-    });
-  }
-
-  // Function to pick an image
-  Future<void> _pickImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      setState(() {
-        _imageFile = File(pickedFile.path);
-      });
-    }
-  }
-
-  void showPetForm({int? index}) {
-    final isUpdating = index != null;
-    final pet = isUpdating
-        ? pets[index!]
-        : Pet(name: '', type: '', breed: '', age: 0, imageUrl: '');
-
-    showDialog(
+    await showDialog(
       context: context,
       builder: (BuildContext context) {
-        String name = pet.name;
-        String type = pet.type;
-        String breed = pet.breed;
-        int age = pet.age;
-        String imageUrl = pet.imageUrl;
-
         return AlertDialog(
           title: Text(isUpdating ? 'Update Pet' : 'Add Pet'),
           content: SingleChildScrollView(
             child: Column(
               children: [
                 GestureDetector(
-                  onTap: _pickImage, // Trigger image picker
-                  child: _imageFile == null && imageUrl.isEmpty
-                      ? Container(
-                          width: 100,
-                          height: 100,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Icon(Icons.add_a_photo),
-                        )
-                      : CircleAvatar(
-                          backgroundImage: _imageFile != null
-                              ? FileImage(_imageFile!)
-                              : NetworkImage(imageUrl) as ImageProvider,
-                          radius: 50,
-                        ),
+                  onTap: () async {
+                    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+                    if (pickedFile != null) {
+                      imageFilePath = pickedFile.path;
+                      formPet.imageUrl.value = imageFilePath!;
+                    }
+                  },
+                  child: Obx(() => CircleAvatar(
+                    radius: 50,
+                    backgroundImage: formPet.imageUrl.value.isNotEmpty
+                        ? FileImage(File(formPet.imageUrl.value))
+                        : null,
+                    child: formPet.imageUrl.value.isEmpty
+                        ? Icon(Icons.add_a_photo, size: 40)
+                        : null,
+                  )),
                 ),
                 SizedBox(height: 20),
-                _buildTextField('Name', (value) {
-                  name = value;
-                }, name),
-                SizedBox(height: 10),
-                _buildTextField('Type (Dog, Cat, etc.)', (value) {
-                  type = value;
-                }, type),
-                SizedBox(height: 10),
-                _buildTextField('Breed', (value) {
-                  breed = value;
-                }, breed),
-                SizedBox(height: 10),
-                _buildTextField('Age', (value) {
-                  age = int.tryParse(value) ?? age;
-                }, age.toString(), keyboardType: TextInputType.number),
+                TextField(
+                  decoration: InputDecoration(labelText: 'Name'),
+                  onChanged: (value) => formPet.name.value = value,
+                  controller: TextEditingController(text: formPet.name.value),
+                ),
+                TextField(
+                  decoration: InputDecoration(labelText: 'Type (Dog, Cat, etc.)'),
+                  onChanged: (value) => formPet.type.value = value,
+                  controller: TextEditingController(text: formPet.type.value),
+                ),
+                TextField(
+                  decoration: InputDecoration(labelText: 'Breed'),
+                  onChanged: (value) => formPet.breed.value = value,
+                  controller: TextEditingController(text: formPet.breed.value),
+                ),
+                TextField(
+                  decoration: InputDecoration(labelText: 'Age'),
+                  keyboardType: TextInputType.number,
+                  onChanged: (value) => formPet.age.value = int.tryParse(value) ?? 0,
+                  controller: TextEditingController(text: formPet.age.value.toString()),
+                ),
               ],
             ),
           ),
           actions: [
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
             ElevatedButton(
+              child: Text(isUpdating ? 'Update' : 'Add'),
               onPressed: () {
-                final newPet = Pet(
-                  name: name,
-                  type: type,
-                  breed: breed,
-                  age: age,
-                  imageUrl: _imageFile != null ? _imageFile!.path : imageUrl,
-                );
                 if (isUpdating) {
-                  updatePet(index!, newPet);
+                  controller.updatePet(pet!.id.value, formPet);
                 } else {
-                  addPet(newPet);
+                  controller.addPet(formPet);
                 }
                 Navigator.of(context).pop();
               },
-              child: Text(isUpdating ? 'Update' : 'Add'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Cancel'),
             ),
           ],
         );
       },
-    );
-  }
-
-  TextField _buildTextField(
-      String label, Function(String) onChanged, String initialValue,
-      {TextInputType keyboardType = TextInputType.text}) {
-    return TextField(
-      decoration: InputDecoration(
-        labelText: label,
-        border: OutlineInputBorder(),
-      ),
-      onChanged: onChanged,
-      controller: TextEditingController(text: initialValue),
-      keyboardType: keyboardType,
     );
   }
 
@@ -270,7 +186,6 @@ class _PetListPageState extends State<PetListPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Custom Header from HomeView
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
             color: Colors.white,
@@ -284,7 +199,7 @@ class _PetListPageState extends State<PetListPage> {
                     color: Colors.black,
                   ),
                 ),
-                const SizedBox(width: 8), // Adjust this width for spacing
+                const SizedBox(width: 8),
                 Image.asset(
                   'assets/icons/cat_icon.png',
                   height: 24,
@@ -295,29 +210,28 @@ class _PetListPageState extends State<PetListPage> {
             ),
           ),
           const Divider(height: 1, color: Colors.grey),
-
           Expanded(
-            child: pets.isEmpty
+            child: Obx(() => controller.pets.isEmpty
                 ? Center(
                     child: Text('No pets added yet!',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)))
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)))
                 : ListView.builder(
-                    itemCount: pets.length,
+                    itemCount: controller.pets.length,
                     itemBuilder: (context, index) {
-                      final pet = pets[index];
+                      final pet = controller.pets[index];
                       return PetCard(
                         pet: pet,
-                        onEdit: () => showPetForm(index: index),
-                        onDelete: () => deletePet(index),
+                        onEdit: () => _showPetForm(context, pet: pet),
+                        onDelete: () => controller.deletePet(pet.id.value),
                       );
                     },
                   ),
+            ),
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => showPetForm(),
+        onPressed: () => _showPetForm(context),
         child: Icon(Icons.add),
       ),
       bottomNavigationBar: const CustomBottomNavigationBar(),

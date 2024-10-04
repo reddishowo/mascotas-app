@@ -6,7 +6,6 @@ abstract class Routes {
   static const HOME = _Paths.HOME;
   static const LOGIN = _Paths.LOGIN;
   static const PROFILE = _Paths.PROFILE;
-  static const profileView = _Paths.ProfileView;
   static const LOCATION = _Paths.LOCATION;
   static const BOOKMARK = _Paths.BOOKMARK;
   static const CHAT = _Paths.CHAT;
@@ -17,8 +16,7 @@ abstract class _Paths {
   _Paths._();
   static const HOME = '/home';
   static const LOGIN = '/login';
-  static const PROFILE = '/profile';
-  static const ProfileView = '/profile/edit';
+  static const PROFILE = '/profiles';
   static const LOCATION = '/location';
   static const BOOKMARK = '/bookmark';
   static const CHAT = '/chat';

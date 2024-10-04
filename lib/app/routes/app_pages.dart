@@ -7,6 +7,8 @@ import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/navbar/bindings/navbar_binding.dart';
+import '../modules/profiles/binding/profile_binding.dart';
+import '../modules/profiles/views/profile_view.dart';
 
 part 'app_routes.dart';
 
@@ -16,7 +18,6 @@ class AppPages {
   static const INITIAL = Routes.LOGIN;
   static const LOGIN = Routes.LOGIN;
   static const PROFILE = Routes.PROFILE;
-  static const ProfileView = Routes.profileView;
   static const PET = Routes.PET;
 
   static final routes = [
@@ -32,7 +33,18 @@ class AppPages {
     GetPage(
       name: _Paths.PET,
       page: () => PetView(),
-      binding: PetBinding(),
+      bindings: [
+      PetBinding(),
+      NavbarBinding(),
+    ] 
     ),
+    GetPage(
+      name: _Paths.PROFILE,
+      page: () => ProfileView(),
+      bindings: [
+      ProfileBinding(),
+      NavbarBinding(),
+    ]
+    )
   ];
 }
