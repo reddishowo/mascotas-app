@@ -9,18 +9,25 @@ import '../modules/login/views/login_view.dart';
 import '../modules/navbar/bindings/navbar_binding.dart';
 import '../modules/profiles/binding/profile_binding.dart';
 import '../modules/profiles/views/profile_view.dart';
+import '../modules/splashscreen/bindings/splash_binding.dart';
+import '../modules/splashscreen/views/splash_view.dart';
 
 part 'app_routes.dart';
 
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.LOGIN;
+  static const INITIAL = Routes.SPLASH;
   static const LOGIN = Routes.LOGIN;
   static const PROFILE = Routes.PROFILE;
   static const PET = Routes.PET;
 
   static final routes = [
+    GetPage(
+      name: _Paths.SPLASH,
+      page: () => SplashView(),
+      binding: SplashBinding(),
+    ),
     GetPage(
       name: _Paths.LOGIN,
       page: () => LoginView(),

@@ -6,7 +6,7 @@ import '../../pet/controllers/pet_controller.dart';
 class ProfileController extends GetxController {
   final PetController _petController = Get.find<PetController>();
 
-  final RxString name = 'Mahlul Buhlul'.obs;
+  final RxString name = 'Admin'.obs;
   final RxString location = 'Malang'.obs;
   final RxInt petCount = 0.obs;
   final RxInt breedCount = 0.obs;

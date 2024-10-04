@@ -69,7 +69,7 @@ class HomeView extends GetView<HomeController> {
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 20),
 
             // "Daily Care" Section
             Padding(
@@ -129,7 +129,7 @@ class HomeView extends GetView<HomeController> {
 
 Widget _buildPetCard(String name, String imagePath) {
   return Padding(
-    padding: const EdgeInsets.only(left: 16),
+    padding: const EdgeInsets.only(left: 16, bottom: 20), // Tambahkan bottom padding
     child: Container(
       width: 220,
       decoration: BoxDecoration(
@@ -171,6 +171,7 @@ Widget _buildPetCard(String name, String imagePath) {
     ),
   );
 }
+
 
   Widget _buildDailyCareCard(
     String petName,

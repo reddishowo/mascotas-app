@@ -39,6 +39,8 @@ dependencies:
   image_picker: ^1.1.2
   persistent_bottom_nav_bar: ^6.2.1
   change_app_package_name: ^1.4.0
+  another_flutter_splash_screen: ^1.2.1
+  flutter_gif: ^0.0.4
 
 dev_dependencies:
   flutter_test:
@@ -73,6 +75,7 @@ flutter:
     - assets/images/cat2.png
     - assets/icons/cat_icon.png
     - assets/images/default_pet_image.png
+    - assets/videos/splash_screen.gif
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
