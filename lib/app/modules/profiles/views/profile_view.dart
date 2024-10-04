@@ -25,7 +25,7 @@ class ProfileView extends GetView<ProfileController> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [Colors.blue, Colors.orange],
+          colors: [Colors.blue, Colors.pink, Colors.orange],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),

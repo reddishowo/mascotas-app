@@ -72,6 +72,7 @@ flutter:
     - assets/images/cat1.png
     - assets/images/cat2.png
     - assets/icons/cat_icon.png
+    - assets/images/default_pet_image.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

@@ -29,6 +29,7 @@ class AppPages {
     GetPage(name: _Paths.HOME, page: () => HomeView(), bindings: [
       HomeBinding(),
       NavbarBinding(),
+      PetBinding(),
     ]),
     GetPage(
       name: _Paths.PET,
@@ -43,6 +44,7 @@ class AppPages {
       page: () => ProfileView(),
       bindings: [
       ProfileBinding(),
+      PetBinding(),
       NavbarBinding(),
     ]
     )

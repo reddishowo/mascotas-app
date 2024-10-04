@@ -1,7 +1,6 @@
 // File: /lib/app/modules/profiles/controllers/profile_controller.dart
 
 import 'package:get/get.dart';
-import '../../../data/models/pet_model.dart';
 import '../../pet/controllers/pet_controller.dart';
 
 class ProfileController extends GetxController {

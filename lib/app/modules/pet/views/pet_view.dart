@@ -166,7 +166,7 @@ class PetListPage extends GetView<PetController> {
               child: Text(isUpdating ? 'Update' : 'Add'),
               onPressed: () {
                 if (isUpdating) {
-                  controller.updatePet(pet!.id.value, formPet);
+                  controller.updatePet(pet.id.value, formPet);
                 } else {
                   controller.addPet(formPet);
                 }

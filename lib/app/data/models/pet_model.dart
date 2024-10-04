@@ -2,10 +2,6 @@
 
 import 'package:get/get.dart';
 
-// File: /lib/app/data/models/pet_model.dart
-
-import 'package:get/get.dart';
-
 class Pet {
   final RxString id;
   final RxString name;
