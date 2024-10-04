@@ -10,6 +10,7 @@ abstract class Routes {
   static const LOCATION = _Paths.LOCATION;
   static const BOOKMARK = _Paths.BOOKMARK;
   static const CHAT = _Paths.CHAT;
+  static const PET = _Paths.PET;
 }
 
 abstract class _Paths {
@@ -21,4 +22,5 @@ abstract class _Paths {
   static const LOCATION = '/location';
   static const BOOKMARK = '/bookmark';
   static const CHAT = '/chat';
+  static const PET = '/pet';
 }

@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:mobile_app_backup/app/modules/pet/bindings/pet_binding.dart';
+import 'package:mobile_app_backup/app/modules/pet/views/pet_view.dart';
 
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
@@ -15,6 +17,7 @@ class AppPages {
   static const LOGIN = Routes.LOGIN;
   static const PROFILE = Routes.PROFILE;
   static const ProfileView = Routes.profileView;
+  static const PET = Routes.PET;
 
   static final routes = [
     GetPage(
@@ -26,5 +29,10 @@ class AppPages {
       HomeBinding(),
       NavbarBinding(),
     ]),
+    GetPage(
+      name: _Paths.PET,
+      page: () => PetView(),
+      binding: PetBinding(),
+    ),
   ];
 }
