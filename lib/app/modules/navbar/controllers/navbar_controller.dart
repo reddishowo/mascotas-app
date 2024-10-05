@@ -8,7 +8,7 @@ class NavbarController extends GetxController {
   // List of available routes based on the index
   final List<String> routes = [
     Routes.BOOKMARK, // 0
-    Routes.LOCATION, // 1
+    Routes.SHOP, // 1
     Routes.HOME, // 2
     Routes.PET, // 3
     Routes.PROFILE, // 4

@@ -1,9 +1,9 @@
-// File: /lib/app/modules/pet/controllers/pet_controller.dart
-
 import 'package:get/get.dart';
 import '../../../data/models/pet_model.dart';
 
 class PetController extends GetxController {
+  static PetController get to => Get.find();
+  
   final RxList<Pet> pets = <Pet>[].obs;
 
   void addPet(Pet pet) {

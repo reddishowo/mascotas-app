@@ -7,7 +7,7 @@ abstract class Routes {
   static const HOME = _Paths.HOME;
   static const LOGIN = _Paths.LOGIN;
   static const PROFILE = _Paths.PROFILE;
-  static const LOCATION = _Paths.LOCATION;
+  static const SHOP = _Paths.SHOP;
   static const BOOKMARK = _Paths.BOOKMARK;
   static const CHAT = _Paths.CHAT;
   static const PET = _Paths.PET;
@@ -18,7 +18,7 @@ abstract class _Paths {
   static const HOME = '/home';
   static const LOGIN = '/login';
   static const PROFILE = '/profiles';
-  static const LOCATION = '/location';
+  static const SHOP = '/shop';
   static const BOOKMARK = '/bookmark';
   static const CHAT = '/chat';
   static const PET = '/pet';

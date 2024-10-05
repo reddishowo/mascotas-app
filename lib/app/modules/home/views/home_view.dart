@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'dart:io';
 import '../../navbar/views/navbar_view.dart';
 import '../controllers/home_controller.dart';
+import '../../pet/controllers/pet_controller.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final PetController petController = Get.find<PetController>();
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -28,7 +32,7 @@ class HomeView extends GetView<HomeController> {
                       color: Colors.black,
                     ),
                   ),
-                  const SizedBox(width: 8), // Adjust this width for spacing
+                  const SizedBox(width: 8),
                   Image.asset(
                     'assets/icons/cat_icon.png',
                     height: 24,
@@ -45,15 +49,18 @@ class HomeView extends GetView<HomeController> {
               padding: const EdgeInsets.all(16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text(
+                children: [
+                  const Text(
                     'Your Pets',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Icon(Icons.chevron_right, color: Colors.grey),
+                  GestureDetector(
+                    onTap: () => Get.toNamed('/pet'),
+                    child: const Icon(Icons.chevron_right, color: Colors.grey),
+                  ),
                 ],
               ),
             ),
@@ -61,13 +68,14 @@ class HomeView extends GetView<HomeController> {
             // Horizontal Scroll of Pets
             SizedBox(
               height: 180,
-              child: ListView(
+              child: Obx(() => ListView.builder(
                 scrollDirection: Axis.horizontal,
-                children: [
-                  _buildPetCard('Khalid Kashmiri', 'assets/images/cat1.png'),
-                  _buildPetCard('Muhammad Sumbul', 'assets/images/cat2.png'),
-                ],
-              ),
+                itemCount: petController.pets.length,
+                itemBuilder: (context, index) {
+                  final pet = petController.pets[index];
+                  return _buildPetCard(pet.name.value, pet.imageUrl.value);
+                },
+              )),
             ),
             const SizedBox(height: 20),
 
@@ -127,51 +135,65 @@ class HomeView extends GetView<HomeController> {
     );
   }
 
-Widget _buildPetCard(String name, String imagePath) {
-  return Padding(
-    padding: const EdgeInsets.only(left: 16, bottom: 20), // Tambahkan bottom padding
-    child: Container(
-      width: 220,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 1,
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-            child: Image.asset(
-              imagePath,
-              height: 120,
-              fit: BoxFit.cover,
+  Widget _buildPetCard(String name, String imagePath) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 16, bottom: 20),
+      child: Container(
+        width: 220,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 1,
+              blurRadius: 4,
+              offset: const Offset(0, 2),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              name,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+              child: _buildPetImage(imagePath),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                name,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
+  Widget _buildPetImage(String imagePath) {
+    if (imagePath.isNotEmpty) {
+      final file = File(imagePath);
+      if (file.existsSync()) {
+        return Image.file(
+          file,
+          height: 120,
+          fit: BoxFit.cover,
+        );
+      }
+    }
+    // Fallback to default image if file doesn't exist or path is empty
+    return Image.asset(
+      'assets/images/default_pet_image.png',
+      height: 120,
+      fit: BoxFit.cover,
+    );
+  }
 
   Widget _buildDailyCareCard(
     String petName,
@@ -270,6 +292,4 @@ Widget _buildPetCard(String name, String imagePath) {
       ),
     );
   }
-
-
 }

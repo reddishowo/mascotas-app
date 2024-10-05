@@ -44,8 +44,8 @@ class LoginView extends GetView<LoginController> {
                 // Image of dog and cat
                 Image.asset(
                   'assets/images/pet_logo.png', // replace with the image path in your assets
-                  height: 200, // Mengurangi ukuran gambar untuk mencegah overflow
-                  width: 200,
+                  height: 300, // Mengurangi ukuran gambar untuk mencegah overflow
+                  width: 300,
                 ),
                 const SizedBox(height: 32),
 
