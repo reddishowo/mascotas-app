@@ -1,5 +1,3 @@
-// File: /lib/app/data/models/pet_model.dart
-
 import 'package:get/get.dart';
 
 class Pet {
@@ -9,6 +7,7 @@ class Pet {
   final RxString breed;
   final RxInt age;
   final RxString imageUrl;
+  final RxDouble weight; // Tambahkan weight
 
   Pet({
     String? id,
@@ -16,6 +15,7 @@ class Pet {
     required String type,
     required String breed,
     required int age,
+    double weight = 0.0, // Default weight 0.0
     String imageUrl = '',
   }) : 
     id = RxString(id ?? DateTime.now().millisecondsSinceEpoch.toString()),
@@ -23,9 +23,8 @@ class Pet {
     type = RxString(type),
     breed = RxString(breed),
     age = RxInt(age),
+    weight = RxDouble(weight), // Inisialisasi weight
     imageUrl = RxString(imageUrl);
-
-  // Other methods (toJson, fromJson, copyWith) remain the same
 
   // Convert Pet object to a Map
   Map<String, dynamic> toJson() {
@@ -35,6 +34,7 @@ class Pet {
       'type': type.value,
       'breed': breed.value,
       'age': age.value,
+      'weight': weight.value, // Tambahkan weight
       'imageUrl': imageUrl.value,
     };
   }
@@ -47,6 +47,7 @@ class Pet {
       type: json['type'],
       breed: json['breed'],
       age: json['age'],
+      weight: json['weight'], // Tambahkan weight
       imageUrl: json['imageUrl'],
     );
   }
@@ -57,6 +58,7 @@ class Pet {
     String? type,
     String? breed,
     int? age,
+    double? weight, // Tambahkan weight
     String? imageUrl,
   }) {
     return Pet(
@@ -65,6 +67,7 @@ class Pet {
       type: type ?? this.type.value,
       breed: breed ?? this.breed.value,
       age: age ?? this.age.value,
+      weight: weight ?? this.weight.value, // Tambahkan weight
       imageUrl: imageUrl ?? this.imageUrl.value,
     );
   }

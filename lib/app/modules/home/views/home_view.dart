@@ -128,6 +128,11 @@ class HomeView extends GetView<HomeController> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: _buildWeeklyGroomingCard(),
             ),
+            const SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: _buildNewsButton(),
+            ),
           ],
         ),
       ),
@@ -292,4 +297,35 @@ class HomeView extends GetView<HomeController> {
       ),
     );
   }
+
+  
+  Widget _buildNewsButton() {
+    return ElevatedButton(
+      onPressed: () {
+        // Navigate to the HTTP/GetConnect page
+        Get.toNamed('/getconnect');
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        minimumSize: const Size(double.infinity, 50), // Make button full width
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+      child: const Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.newspaper),
+          SizedBox(width: 8),
+          Text(
+            'View Latest Pet News',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+    );
+  }
+
 }

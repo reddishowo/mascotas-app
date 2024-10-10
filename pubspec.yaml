@@ -41,6 +41,7 @@ dependencies:
   change_app_package_name: ^1.4.0
   another_flutter_splash_screen: ^1.2.1
   flutter_gif: ^0.0.4
+  webview_flutter: ^4.9.0
 
 dev_dependencies:
   flutter_test:
@@ -76,6 +77,11 @@ flutter:
     - assets/icons/cat_icon.png
     - assets/images/default_pet_image.png
     - assets/videos/splash_screen.gif
+    - assets/images/meowmix.png
+    - assets/images/royal_canin_kitten.png
+    - assets/images/royal_canin_persian.png
+    - assets/images/meowmix_indoor_health.png
+    - assets/images/9lives_gentlecare.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

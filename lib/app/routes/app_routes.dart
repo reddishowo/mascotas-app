@@ -11,6 +11,12 @@ abstract class Routes {
   static const BOOKMARK = _Paths.BOOKMARK;
   static const CHAT = _Paths.CHAT;
   static const PET = _Paths.PET;
+  static const ARTICLE_DETAILS = _Paths.ARTICLE_DETAILS;
+  static const GETCONNECT = _Paths.GETCONNECT;
+  static const ARTICLE_DETAILS_WEBVIEW = _Paths.ARTICLE_DETAILS_WEBVIEW;
+  static const PETDETAIL = _Paths.PETDETAIL;
+  static const CART = _Paths.CART;
+
 }
 
 abstract class _Paths {
@@ -23,4 +29,10 @@ abstract class _Paths {
   static const CHAT = '/chat';
   static const PET = '/pet';
   static const SPLASH = '/splash';
+  static const ARTICLE_DETAILS = '/article-details';
+  static const GETCONNECT = '/getconnect';
+  static const ARTICLE_DETAILS_WEBVIEW = '/article_details_webview';
+  static const PETDETAIL = '/petdetail';
+  static const CART = '/cart';
+  
 }

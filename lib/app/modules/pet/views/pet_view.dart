@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import '../../../routes/app_pages.dart';
 import '../controllers/pet_controller.dart';
 import '../../../data/models/pet_model.dart';
 import '../../navbar/views/navbar_view.dart';
@@ -29,7 +30,12 @@ class PetCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return GestureDetector(
+      onTap: () => Get.toNamed(
+        Routes.PETDETAIL,
+        arguments: pet,
+      ),
+      child: Card(
       elevation: 8,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
@@ -66,7 +72,7 @@ class PetCard extends StatelessWidget {
                 )),
                 SizedBox(height: 4),
                 Obx(() => Text(
-                  '${pet.type.value} - ${pet.breed.value} - Age: ${pet.age.value}',
+                  '${pet.type.value} - ${pet.breed.value} - Age: ${pet.age.value} - Weight: ${pet.weight.value}',
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.grey[700],
@@ -91,6 +97,7 @@ class PetCard extends StatelessWidget {
           ),
         ],
       ),
+      ),
     );
   }
 }
@@ -101,83 +108,90 @@ class PetListPage extends GetView<PetController> {
   final ImagePicker _picker = ImagePicker();
 
   Future<void> _showPetForm(BuildContext context, {Pet? pet}) async {
-    final isUpdating = pet != null;
-    final formPet = pet ?? Pet(name: '', type: '', breed: '', age: 0, imageUrl: '');
+  final isUpdating = pet != null;
+  final formPet = pet ?? Pet(name: '', type: '', breed: '', age: 0, imageUrl: '', weight: 0.0);
 
-    String? imageFilePath;
+  String? imageFilePath;
 
-    await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(isUpdating ? 'Update Pet' : 'Add Pet'),
-          content: SingleChildScrollView(
-            child: Column(
-              children: [
-                GestureDetector(
-                  onTap: () async {
-                    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-                    if (pickedFile != null) {
-                      imageFilePath = pickedFile.path;
-                      formPet.imageUrl.value = imageFilePath!;
-                    }
-                  },
-                  child: Obx(() => CircleAvatar(
-                    radius: 50,
-                    backgroundImage: formPet.imageUrl.value.isNotEmpty
-                        ? FileImage(File(formPet.imageUrl.value))
-                        : null,
-                    child: formPet.imageUrl.value.isEmpty
-                        ? Icon(Icons.add_a_photo, size: 40)
-                        : null,
-                  )),
-                ),
-                SizedBox(height: 20),
-                TextField(
-                  decoration: InputDecoration(labelText: 'Name'),
-                  onChanged: (value) => formPet.name.value = value,
-                  controller: TextEditingController(text: formPet.name.value),
-                ),
-                TextField(
-                  decoration: InputDecoration(labelText: 'Type (Dog, Cat, etc.)'),
-                  onChanged: (value) => formPet.type.value = value,
-                  controller: TextEditingController(text: formPet.type.value),
-                ),
-                TextField(
-                  decoration: InputDecoration(labelText: 'Breed'),
-                  onChanged: (value) => formPet.breed.value = value,
-                  controller: TextEditingController(text: formPet.breed.value),
-                ),
-                TextField(
-                  decoration: InputDecoration(labelText: 'Age'),
-                  keyboardType: TextInputType.number,
-                  onChanged: (value) => formPet.age.value = int.tryParse(value) ?? 0,
-                  controller: TextEditingController(text: formPet.age.value.toString()),
-                ),
-              ],
-            ),
+  await showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(isUpdating ? 'Update Pet' : 'Add Pet'),
+        content: SingleChildScrollView(
+          child: Column(
+            children: [
+              GestureDetector(
+                onTap: () async {
+                  final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+                  if (pickedFile != null) {
+                    imageFilePath = pickedFile.path;
+                    formPet.imageUrl.value = imageFilePath!;
+                  }
+                },
+                child: Obx(() => CircleAvatar(
+                  radius: 50,
+                  backgroundImage: formPet.imageUrl.value.isNotEmpty
+                      ? FileImage(File(formPet.imageUrl.value))
+                      : null,
+                  child: formPet.imageUrl.value.isEmpty
+                      ? Icon(Icons.add_a_photo, size: 40)
+                      : null,
+                )),
+              ),
+              SizedBox(height: 20),
+              TextField(
+                decoration: InputDecoration(labelText: 'Name'),
+                onChanged: (value) => formPet.name.value = value,
+                controller: TextEditingController(text: formPet.name.value),
+              ),
+              TextField(
+                decoration: InputDecoration(labelText: 'Type (Dog, Cat, etc.)'),
+                onChanged: (value) => formPet.type.value = value,
+                controller: TextEditingController(text: formPet.type.value),
+              ),
+              TextField(
+                decoration: InputDecoration(labelText: 'Breed'),
+                onChanged: (value) => formPet.breed.value = value,
+                controller: TextEditingController(text: formPet.breed.value),
+              ),
+              TextField(
+                decoration: InputDecoration(labelText: 'Age'),
+                keyboardType: TextInputType.number,
+                onChanged: (value) => formPet.age.value = int.tryParse(value) ?? 0,
+                controller: TextEditingController(text: formPet.age.value.toString()),
+              ),
+              TextField(
+                decoration: InputDecoration(labelText: 'Weight (kg)'), // Input untuk weight
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                onChanged: (value) => formPet.weight.value = double.tryParse(value) ?? 0.0,
+                controller: TextEditingController(text: formPet.weight.value.toString()),
+              ),
+            ],
           ),
-          actions: [
-            TextButton(
-              child: Text('Cancel'),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            ElevatedButton(
-              child: Text(isUpdating ? 'Update' : 'Add'),
-              onPressed: () {
-                if (isUpdating) {
-                  controller.updatePet(pet.id.value, formPet);
-                } else {
-                  controller.addPet(formPet);
-                }
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+        ),
+        actions: [
+          TextButton(
+            child: Text('Cancel'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          ElevatedButton(
+            child: Text(isUpdating ? 'Update' : 'Add'),
+            onPressed: () {
+              if (isUpdating) {
+                controller.updatePet(pet.id.value, formPet);
+              } else {
+                controller.addPet(formPet);
+              }
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
 
   @override
   Widget build(BuildContext context) {

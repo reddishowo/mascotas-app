@@ -143,7 +143,7 @@ class ProfileView extends GetView<ProfileController> {
     );
   }
 
-  Widget _buildMenuItem(String title, {IconData? icon}) {
+  Widget _buildMenuItem(String title, {IconData? icon, VoidCallback? onTap}) {
     return Container(
       margin: EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
