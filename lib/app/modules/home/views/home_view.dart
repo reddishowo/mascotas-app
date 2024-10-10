@@ -320,7 +320,7 @@ class HomeView extends GetView<HomeController> {
           Icon(Icons.newspaper),
           SizedBox(width: 8),
           Text(
-            'View Latest Pet News',
+            'View Latest News',
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
         ],

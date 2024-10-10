@@ -24,7 +24,7 @@ class ArticleDetailPage extends GetView<ArticleDetailController> {
               child: Row(
                 children: [
                   const Text(
-                    'News App',
+                    'News',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,

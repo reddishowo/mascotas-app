@@ -31,7 +31,7 @@ class PetDetailView extends GetView<PetDetailController> {
                   top: 40,
                   left: 10,
                   child: IconButton(
-                    icon: Icon(Icons.arrow_back, color: Colors.white),
+                    icon: Icon(Icons.arrow_back, color: Colors.black),
                     onPressed: () => Get.back(),
                   ),
                 ),

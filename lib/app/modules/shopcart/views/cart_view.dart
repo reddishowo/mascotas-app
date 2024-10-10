@@ -42,9 +42,12 @@ class CartView extends GetView<CartController> {
                           ),
                           child: ListTile(
                             contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16.0),
-                            leading: ClipRRect(
-                              borderRadius: BorderRadius.circular(8.0),
-                              child: Image.asset(item['imageUrl'], width: 50, height: 50, fit: BoxFit.cover),
+                            leading: Hero(
+                              tag: 'cartItem_${item['name']}_$index', // Updated unique tag
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8.0),
+                                child: Image.asset(item['imageUrl'], width: 50, height: 50, fit: BoxFit.cover),
+                              ),
                             ),
                             title: Text(
                               item['name'],
@@ -55,7 +58,7 @@ class CartView extends GetView<CartController> {
                               style: TextStyle(color: Colors.grey),
                             ),
                             trailing: Container(
-                              width: 100, // Set a fixed width for the trailing widget
+                              width: 100,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 mainAxisAlignment: MainAxisAlignment.center,

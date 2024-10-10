@@ -216,33 +216,36 @@ class ShopView extends StatelessWidget {
     );
   }
 
-  Widget _buildProductCard(String title, String price, String imagePath, ShopController controller) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey[200]!,
-            blurRadius: 4,
-            spreadRadius: 1,
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
-                image: DecorationImage(
-                  image: AssetImage(imagePath),
-                  fit: BoxFit.cover,
+    Widget _buildProductCard(String title, String price, String imagePath, ShopController controller) {
+      return Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey[200]!,
+              blurRadius: 4,
+              spreadRadius: 1,
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Hero(
+                tag: 'cartItem_$title', // Updated Hero tag to match CartView
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+                    image: DecorationImage(
+                      image: AssetImage(imagePath),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -271,6 +274,7 @@ class ShopView extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: FloatingActionButton(
+                heroTag: null,
                 onPressed: () => controller.addToCart(title),
                 child: Icon(Icons.add, color: Colors.white),
                 backgroundColor: Colors.blue,
