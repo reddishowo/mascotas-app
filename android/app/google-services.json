@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "315664128137",
+    "project_id": "mastocas-app",
+    "storage_bucket": "mastocas-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:315664128137:android:dfb6c4e94cc424e6ee0e58",
+        "android_client_info": {
+          "package_name": "com.example.mascotas_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYuBfTBA5xVWZ1zygM_ZmDrSe_WRz_GRI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

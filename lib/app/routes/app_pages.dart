@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:mobile_app_backup/app/modules/pet/bindings/pet_binding.dart';
 import 'package:mobile_app_backup/app/modules/pet/views/pet_view.dart';
+import 'package:mobile_app_backup/app/modules/register/views/register_view.dart';
 import 'package:mobile_app_backup/app/modules/shop/views/shop_views.dart';
 import 'package:mobile_app_backup/app/modules/shopcart/bindings/cart_binding.dart';
 
@@ -18,6 +19,7 @@ import '../modules/petdetails/bindings/petdetail_binding.dart';
 import '../modules/petdetails/views/petdetail_view.dart';
 import '../modules/profiles/binding/profile_binding.dart';
 import '../modules/profiles/views/profile_view.dart';
+import '../modules/register/bindings/register_binding.dart';
 import '../modules/shop/bindings/shop_binding.dart';
 import '../modules/shopcart/views/cart_view.dart';
 import '../modules/splashscreen/bindings/splash_binding.dart';
@@ -30,6 +32,7 @@ class AppPages {
 
   static const INITIAL = Routes.SPLASH;
   static const LOGIN = Routes.LOGIN;
+  static const REGISTER = Routes.REGISTER;
   static const PROFILE = Routes.PROFILE;
   static const SHOP = Routes.SHOP;
   static const CART = Routes.CART;
@@ -41,13 +44,26 @@ class AppPages {
     GetPage(
       name: _Paths.SPLASH,
       page: () => SplashView(),
-      binding: SplashBinding(),
-    ),
+      bindings: [
+      SplashBinding(),
+      RegisterBinding(),
+    ]),
+    GetPage(
+      name: _Paths.REGISTER,
+      page: () => RegisterView(),
+      bindings: [
+      SplashBinding(),
+      RegisterBinding(),
+      LoginBinding()
+    ]),
     GetPage(
       name: _Paths.LOGIN,
       page: () => LoginView(),
-      binding: LoginBinding(),
-    ),
+      bindings: [
+      SplashBinding(),
+      RegisterBinding(),
+      LoginBinding()
+    ]),
     GetPage(
       name: _Paths.HOME, 
       page: () => HomeView(), 

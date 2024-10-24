@@ -6,6 +6,7 @@ abstract class Routes {
   static const SPLASH = _Paths.SPLASH;
   static const HOME = _Paths.HOME;
   static const LOGIN = _Paths.LOGIN;
+  static const REGISTER = _Paths.REGISTER;
   static const PROFILE = _Paths.PROFILE;
   static const SHOP = _Paths.SHOP;
   static const BOOKMARK = _Paths.BOOKMARK;
@@ -16,13 +17,13 @@ abstract class Routes {
   static const ARTICLE_DETAILS_WEBVIEW = _Paths.ARTICLE_DETAILS_WEBVIEW;
   static const PETDETAIL = _Paths.PETDETAIL;
   static const CART = _Paths.CART;
-
 }
 
 abstract class _Paths {
   _Paths._();
   static const HOME = '/home';
   static const LOGIN = '/login';
+  static const REGISTER = '/register';
   static const PROFILE = '/profiles';
   static const SHOP = '/shop';
   static const BOOKMARK = '/bookmark';
@@ -34,5 +35,4 @@ abstract class _Paths {
   static const ARTICLE_DETAILS_WEBVIEW = '/article_details_webview';
   static const PETDETAIL = '/petdetail';
   static const CART = '/cart';
-  
 }

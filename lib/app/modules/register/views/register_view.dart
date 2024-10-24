@@ -1,23 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:mobile_app_backup/app/modules/register/controllers/authentication_controller.dart'; // Firebase package for authentication
 
-class LoginView extends GetView<AuthenticationController> {
-  const LoginView({super.key});
+import '../controllers/authentication_controller.dart';
+
+class RegisterView extends StatefulWidget {
+  @override
+  State<RegisterView> createState() => _RegisterViewState();
+}
+
+class _RegisterViewState extends State<RegisterView> {
+  final AuthenticationController _authController =
+      Get.put(AuthenticationController());
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  bool obscurePassword = true;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController emailController = TextEditingController();
-    final TextEditingController passwordController = TextEditingController();
-    bool obscurePassword = true;
-
     return Scaffold(
-      // Menggunakan resizeToAvoidBottomInset agar tampilan menyesuaikan dengan keyboard
       resizeToAvoidBottomInset: true,
       body: Center(
         child: SingleChildScrollView(
-          // Membungkus konten dengan SingleChildScrollView agar dapat di-scroll
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32.0),
             child: Column(
@@ -44,15 +54,15 @@ class LoginView extends GetView<AuthenticationController> {
 
                 // Image of dog and cat
                 Image.asset(
-                  'assets/images/pet_logo.png', // replace with the image path in your assets
-                  height: 300, // Mengurangi ukuran gambar untuk mencegah overflow
+                  'assets/images/pet_logo.png',
+                  height: 300,
                   width: 300,
                 ),
                 const SizedBox(height: 32),
 
                 // Email TextField
                 TextField(
-                  controller: emailController,
+                  controller: _emailController,
                   decoration: InputDecoration(
                     prefixIcon: const Icon(Icons.email_outlined),
                     hintText: 'Email',
@@ -71,7 +81,7 @@ class LoginView extends GetView<AuthenticationController> {
                 StatefulBuilder(
                   builder: (context, setState) {
                     return TextField(
-                      controller: passwordController,
+                      controller: _passwordController,
                       obscureText: obscurePassword,
                       decoration: InputDecoration(
                         prefixIcon: const Icon(Icons.lock_outline),
@@ -101,60 +111,47 @@ class LoginView extends GetView<AuthenticationController> {
                 ),
                 const SizedBox(height: 16),
 
-                // Login Button
-                ElevatedButton(
-                  onPressed: () async {
-                    String email = emailController.text.trim();
-                    String password = passwordController.text.trim();
-
-                    if (email.isEmpty || password.isEmpty) {
-                      Get.snackbar('Error', 'Please fill in both fields');
-                      return;
-                    }
-
-                    // Show loading
-                    controller.isLoading.value = true;
-
-                    try {
-                      // Firebase login logic
-                      // ignore: unused_local_variable
-                      UserCredential userCredential = await FirebaseAuth.instance
-                          .signInWithEmailAndPassword(
-                        email: email,
-                        password: password,
-                      );
-                      
-                      // Navigate to home on successful login
-                      Get.offNamed('/home');
-                    } on FirebaseAuthException catch (e) {
-                      String errorMsg = '';
-                      if (e.code == 'user-not-found') {
-                        errorMsg = 'No user found for that email.';
-                      } else if (e.code == 'wrong-password') {
-                        errorMsg = 'Wrong password provided.';
-                      } else {
-                        errorMsg = 'Something went wrong, try again later.';
-                      }
-                      Get.snackbar('Login Failed', errorMsg);
-                    } finally {
-                      controller.isLoading.value = false;
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 18,
-                      horizontal: 30,
-                    ),
-                  ),
-                  child: Obx(() {
-                    return controller.isLoading.value
-                        ? CircularProgressIndicator()
-                        : const Text('Login', style: TextStyle(fontSize: 16));
-                  }),
-                ),
+                // Register Button with Obx
+                Obx(() => SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: _authController.isLoading.value
+                            ? null
+                            : () {
+                                if (_emailController.text.trim().isEmpty ||
+                                    _passwordController.text.trim().isEmpty) {
+                                  Get.snackbar('Error', 'Please fill in both fields');
+                                  return;
+                                }
+                                _authController.registerUser(
+                                  _emailController.text.trim(),
+                                  _passwordController.text.trim(),
+                                );
+                              },
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 18,
+                            horizontal: 30,
+                          ),
+                        ),
+                        child: _authController.isLoading.value
+                            ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                ),
+                              )
+                            : const Text(
+                                'Register',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                      ),
+                    )),
                 const SizedBox(height: 16),
 
                 // "Or" divider with text
@@ -175,27 +172,36 @@ class LoginView extends GetView<AuthenticationController> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     IconButton(
-                      icon: Image.asset('assets/icons/google.png'), // Replace with actual Google icon
+                      icon: Image.asset('assets/icons/google.png'),
                       iconSize: 40,
                       onPressed: () {
                         // Google sign-in logic
                       },
                     ),
                     IconButton(
-                      icon: Image.asset('assets/icons/facebook.png'), // Replace with actual Facebook icon
+                      icon: Image.asset('assets/icons/facebook.png'),
                       iconSize: 40,
                       onPressed: () {
                         // Facebook sign-in logic
                       },
                     ),
                     IconButton(
-                      icon: Image.asset('assets/icons/apple.png'), // Replace with actual Apple icon
+                      icon: Image.asset('assets/icons/apple.png'),
                       iconSize: 40,
                       onPressed: () {
                         // Apple sign-in logic
                       },
                     ),
                   ],
+                ),
+                
+                // Link to Login
+                TextButton(
+                  onPressed: () => Get.toNamed('/login'),
+                  child: const Text(
+                    'Sudah punya akun? Login di sini',
+                    style: TextStyle(fontSize: 14),
+                  ),
                 ),
               ],
             ),

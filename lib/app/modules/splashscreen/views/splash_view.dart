@@ -22,7 +22,7 @@ class SplashView extends GetView<SplashController> {
           },
           onEnd: () async {
             debugPrint("Splash screen ended");
-            controller.navigateToHome();  // Navigate to login after splash screen
+            controller.navigateToRegister();  // Navigate to login after splash screen
           },
         ),
       ),

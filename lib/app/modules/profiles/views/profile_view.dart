@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../register/controllers/authentication_controller.dart';
 import '../controllers/profile_controller.dart';
 import '../../navbar/views/navbar_view.dart';
 
 class ProfileView extends GetView<ProfileController> {
-  const ProfileView({Key? key}) : super(key: key);
+  ProfileView({Key? key}) : super(key: key);
+  final AuthenticationController _authController =
+      Get.put(AuthenticationController());
 
   @override
   Widget build(BuildContext context) {
@@ -55,20 +58,20 @@ class ProfileView extends GetView<ProfileController> {
             ),
             SizedBox(height: 10),
             Obx(() => Text(
-              controller.name.value,
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            )),
+                  controller.name.value,
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                )),
             Obx(() => Text(
-              controller.location.value,
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.white,
-              ),
-            )),
+                  controller.location.value,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                  ),
+                )),
           ],
         ),
       ),
@@ -107,12 +110,12 @@ class ProfileView extends GetView<ProfileController> {
       child: Column(
         children: [
           Obx(() => Text(
-            count.toString(),
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-          )),
+                count.toString(),
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              )),
           Text(
             label,
             style: TextStyle(
@@ -130,14 +133,23 @@ class ProfileView extends GetView<ProfileController> {
       child: ListView(
         padding: EdgeInsets.symmetric(horizontal: 16),
         children: [
-          _buildMenuItem('Your Profile',icon: Icons.person,),
-          _buildMenuItem('Manage Address', icon: Icons.location_on,),
+          _buildMenuItem(
+            'Your Profile',
+            icon: Icons.person,
+          ),
+          _buildMenuItem(
+            'Manage Address',
+            icon: Icons.location_on,
+          ),
           _buildMenuItem('My Schedule', icon: Icons.calendar_today),
-          _buildMenuItem('My Wallet', icon: Icons.account_balance_wallet_outlined),
+          _buildMenuItem('My Wallet',
+              icon: Icons.account_balance_wallet_outlined),
           _buildMenuItem('History Payment', icon: Icons.history),
           _buildMenuItem('Help Center', icon: Icons.help_outline),
           _buildMenuItem('Privacy Policy', icon: Icons.lock_outline),
-          _buildMenuItem('Sign Out', icon: Icons.door_back_door), 
+          _buildMenuItem('Sign Out', icon: Icons.door_back_door, onTap: () {
+            _authController.logout();
+          }),
         ],
       ),
     );

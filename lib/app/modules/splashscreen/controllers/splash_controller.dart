@@ -8,14 +8,14 @@ class SplashController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    navigateToHome();
+    navigateToRegister();
   }
 
-  void navigateToHome() async {
+  void navigateToRegister() async {
     if (!_hasNavigated) {
       _hasNavigated = true;  // Set to true to avoid repeated navigation
       await Future.delayed(const Duration(seconds: 3));  // Simulate splash screen delay
-      Get.offNamed('/login');  // Navigate to the login screen
+      Get.offNamed('/register');  // Navigate to the login screen
     }
   }
 }
