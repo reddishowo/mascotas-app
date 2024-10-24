@@ -9,16 +9,19 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
-  final AuthenticationController _authController =
-      Get.put(AuthenticationController());
+  final AuthenticationController _authController = Get.put(AuthenticationController());
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController(); // Nama
+  final TextEditingController _ageController = TextEditingController(); // Umur
   bool obscurePassword = true;
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _nameController.dispose(); // Dispose Name controller
+    _ageController.dispose();  // Dispose Age controller
     super.dispose();
   }
 
@@ -60,6 +63,40 @@ class _RegisterViewState extends State<RegisterView> {
                 ),
                 const SizedBox(height: 32),
 
+
+                 TextField(
+                  controller: _nameController,
+                  decoration: InputDecoration(
+                    prefixIcon: const Icon(Icons.person_outline),
+                    hintText: 'Nama',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 18,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+
+                // Umur TextField
+                TextField(
+                  controller: _ageController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    prefixIcon: const Icon(Icons.cake_outlined),
+                    hintText: 'Umur',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 18,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
                 // Email TextField
                 TextField(
                   controller: _emailController,
@@ -112,18 +149,22 @@ class _RegisterViewState extends State<RegisterView> {
                 const SizedBox(height: 16),
 
                 // Register Button with Obx
-                Obx(() => SizedBox(
+                                Obx(() => SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: _authController.isLoading.value
                             ? null
                             : () {
-                                if (_emailController.text.trim().isEmpty ||
+                                if (_nameController.text.trim().isEmpty ||
+                                    _ageController.text.trim().isEmpty ||
+                                    _emailController.text.trim().isEmpty ||
                                     _passwordController.text.trim().isEmpty) {
-                                  Get.snackbar('Error', 'Please fill in both fields');
+                                  Get.snackbar('Error', 'All fields are required');
                                   return;
                                 }
                                 _authController.registerUser(
+                                  _nameController.text.trim(),
+                                  int.parse(_ageController.text.trim()),
                                   _emailController.text.trim(),
                                   _passwordController.text.trim(),
                                 );
