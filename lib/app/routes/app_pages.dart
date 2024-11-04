@@ -54,7 +54,8 @@ class AppPages {
       bindings: [
       SplashBinding(),
       RegisterBinding(),
-      LoginBinding()
+      LoginBinding(),
+      NavbarBinding()
     ]),
     GetPage(
       name: _Paths.LOGIN,

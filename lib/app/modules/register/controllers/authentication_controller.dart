@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../home/views/home_view.dart';
 import '../../login/views/login_view.dart';
 
 class AuthenticationController extends GetxController {
@@ -29,7 +30,7 @@ class AuthenticationController extends GetxController {
 
       Get.snackbar('Success', 'Registration successful',
           backgroundColor: Colors.green);
-      Get.off(LoginView());
+      Get.off(HomeView());
     } catch (error) {
       Get.snackbar('Error', 'Registration failed: $error',
           backgroundColor: Colors.red);

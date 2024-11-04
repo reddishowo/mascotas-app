@@ -6,16 +6,11 @@ import 'package:firebase_core/firebase_core.dart'; // Import Firebase Core packa
 import 'firebase_options.dart'; // Import generated Firebase options
 
 void main() async {
-  // Ensure that plugin services are initialized before `runApp` is called.
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // Initialize Firebase with platform-specific options
   await Firebase.initializeApp(
     name: "com.example.mascotas_app",
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  
-  // Run the application
   runApp(
     GetMaterialApp(
       title: "Application",
